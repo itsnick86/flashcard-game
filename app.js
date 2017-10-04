@@ -11,7 +11,11 @@ app.set('view engine', 'pug');
 
 app.get('/', (req, res) => {
   const name = req.cookies.username
-  res.render('index', { name });
+  if (name) {
+    res.render('index', { name });
+  } else {
+    res.redirect('/hello')
+  }
 });
 
 app.get('/cards', (req, res) => {
@@ -25,6 +29,11 @@ app.get('/hello', (req, res) => {
 app.post('/hello', (req, res) => {
   res.cookie('username', req.body.username);
   res.redirect('/');
+});
+
+app.post('/goodby', (req, res) => {
+  res.clearCookie('username');
+  res.redirect('/hello');
 });
 
 app.listen(3000, () => {
